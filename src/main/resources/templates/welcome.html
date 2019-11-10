@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Spring Boot Thymeleaf Hello World Example</title>
+
+
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+
+<body>
+
+<img th:src="@{/images/abc.png}">
+<img th:src="@{../images/abc.png}">
+<img th:src="@{../images/Taco.jpg}"/>
+<img src="../static/images/abc.png" width="1000" th:src="@{images/abc.png}"/>
+<img src="../static/images/abc.png">
+<main role="main" class="container">
+
+    <div class="starter-template">
+        <h1>Example running Spring project</h1>
+        <h2>
+
+        </h2>
+    </div>
+
+    <ol>
+
+    </ol>
+
+</main>
+<!-- /.container -->
+
+<script type="text/javascript" th:src="@{webjars/bootstrap/4.2.1/js/bootstrap.min.js}"></script>
+</body>
+</html>
