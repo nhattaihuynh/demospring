@@ -30,6 +30,11 @@ public class AbstractDaoImpl<T, V extends Serializable> implements AbstractDao<T
     @Autowired
     @Lazy
     protected UserDao userDao;
+
+    @Autowired
+    @Lazy
+    protected CartItemDao cartItemDao;
+
     @Autowired
     protected SessionFactory sessionFactory;
 

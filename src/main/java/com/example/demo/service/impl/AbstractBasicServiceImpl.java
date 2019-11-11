@@ -25,4 +25,8 @@ public class AbstractBasicServiceImpl implements AbstractService {
     @Autowired
     @Lazy
     protected UserDao userDao;
+
+    @Autowired
+    @Lazy
+    protected CartItemDao cartItemDao;
 }

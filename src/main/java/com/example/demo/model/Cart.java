@@ -30,5 +30,9 @@ public class Cart {
     @OneToOne(mappedBy = "cart")
     private User user;
 
-
+    public Cart(){
+        this.totalBooks = 0;
+        this.totalPrice = 0.0;
+        this.saveAmount = 0.0;
+    }
 }
