@@ -24,7 +24,6 @@ public class PublishHouseDaoImpl extends AbstractDaoImpl<PublishingHouse, Intege
             NativeQuery query = session.createNativeQuery("SELECT * FROM book WHERE id_publish_house =:id_publish_house", Book.class);
             query.setParameter("id_publish_house", id);
             list = (List<Book>) query.list();
-
         } catch (Exception e){
             e.printStackTrace();
         } finally {

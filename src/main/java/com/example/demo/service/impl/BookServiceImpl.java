@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Book;
+import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.BookService;
 import org.springframework.stereotype.Service;
@@ -11,14 +12,26 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
     @Override
     public ResponseEntity findAll(){
         ResponseEntity response = new ResponseEntity();
-        response.setData(bookDao.findAll());
+        try {
+            response.setData(bookDao.findAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
         return response;
     }
 
     @Override
     public ResponseEntity save(Book book) {
         ResponseEntity response = new ResponseEntity();
-        response.setData(bookDao.save(book));
+        try {
+            response.setData(bookDao.save(book));
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
         return response;
     }
 }
