@@ -16,4 +16,10 @@ public class CartItemController {
     public ResponseEntity addNewItem(@RequestBody CartItemDTO cartItem, @PathVariable("id_user") Integer id_user){
         return cartItemService.addNewCartItemForUser(cartItem, id_user);
     }
+
+    @PutMapping("/add/{id_user}")
+    public ResponseEntity updateItem(@RequestBody CartItemDTO cartItem, @PathVariable("id_user") Integer id_user){
+        return cartItemService.addNewCartItemForUser(cartItem, id_user);
+    }
+
 }

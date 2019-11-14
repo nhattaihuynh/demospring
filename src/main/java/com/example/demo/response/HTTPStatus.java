@@ -6,6 +6,7 @@ public enum HTTPStatus {
     UNAUTHORIZED("401", "Unauthorized"),
     FORBIDDEN("403", "Access is forbidden"),
     NOT_FOUND("404", "Not found resource"),
+    CONFLICT("409", "Data exist in system"),
     SERVER_ERROR("500", "Internal server error"),
     SERVICE_NOT_AVAILABLE("503", "Service not available");
     private String code;

@@ -6,6 +6,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class CartItemDTO {
+
+    private Integer id;
     private Integer quantity;
     private Integer idBook;
 

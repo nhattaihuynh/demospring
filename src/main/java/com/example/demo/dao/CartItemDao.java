@@ -5,5 +5,5 @@ import com.example.demo.model.CartItem;
 
 public interface CartItemDao extends AbstractDao<CartItem, Integer> {
 
-    void addNewCartItemForUser(CartItemDTO item, Integer id_user);
+    void updateCartItem(CartItemDTO cartItem);
 }
