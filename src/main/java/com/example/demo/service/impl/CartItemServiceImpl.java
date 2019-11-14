@@ -49,10 +49,29 @@ public class CartItemServiceImpl extends AbstractBasicServiceImpl implements Car
     }
 
     @Override
-    public ResponseEntity updateCartItem(CartItemDTO cartItem) {
+    public ResponseEntity updateCartItem(CartItemDTO cartDto) {
         ResponseEntity entity = new ResponseEntity();
+        Session session = null;
+        Transaction tx;
         try {
-            cartItemDao.updateCartItem(cartItem);
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+            NativeQuery query = session.createNativeQuery("SELECT * FROM cart_item WHERE id_book =:id_book", CartItem.class);
+            query.setParameter("id_book", cartDto.getIdBook());
+            List<CartItem> cartItems = query.list();
+            if (cartItems.size() == 0) {
+                entity.setCode(HTTPStatus.DATA_NOT_FOUND.getCode());
+                entity.setMessage(HTTPStatus.DATA_NOT_FOUND.getMessage());
+                return entity;
+            }
+
+            CartItem item = cartItems.get(0);
+            item.setBook(bookDao.findById(cartDto.getIdBook()));
+            item.setQuantity(cartDto.getQuantity());
+
+            session.update(item);
+            tx.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
             entity.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
