@@ -1,6 +1,5 @@
 package com.example.demo.dao.impl;
 
-import com.example.demo.dao.AbstractDaoImpl;
 import com.example.demo.dao.UserDao;
 import com.example.demo.model.User;
 import org.springframework.stereotype.Repository;

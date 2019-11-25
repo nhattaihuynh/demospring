@@ -1,9 +1,7 @@
 package com.example.demo.dao;
 
-import com.example.demo.dto.RatingDTO;
 import com.example.demo.model.Rating;
 
-public interface RatingDao {
+public interface RatingDao extends AbstractDao<Rating, Integer>{
 
-    Rating addNewRating(RatingDTO dto, Integer id_book);
 }

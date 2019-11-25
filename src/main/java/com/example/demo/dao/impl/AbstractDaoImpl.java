@@ -1,39 +1,17 @@
-package com.example.demo.dao;
+package com.example.demo.dao.impl;
 
+import com.example.demo.dao.AbstractDao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public class AbstractDaoImpl<T, V extends Serializable> implements AbstractDao<T, V> {
-    @Autowired
-    @Lazy
-    protected BookDao bookDao;
-    @Autowired
-    @Lazy
-    protected PublishHouseDao publishHouseDao;
-
-    @Autowired
-    @Lazy
-    protected RatingDao ratingDao;
-
-    @Autowired
-    @Lazy
-    protected AddressDao addressDao;
-
-    @Autowired
-    @Lazy
-    protected UserDao userDao;
-
-    @Autowired
-    @Lazy
-    protected CartItemDao cartItemDao;
 
     @Autowired
     protected SessionFactory sessionFactory;
