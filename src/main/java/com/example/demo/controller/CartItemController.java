@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/cart-item", produces = "application/json; charset=utf-8")
 public class CartItemController {
+
     @Autowired
     private CartItemService cartItemService;
 
@@ -22,4 +23,8 @@ public class CartItemController {
         return cartItemService.updateCartItem(cartItem);
     }
 
+    @DeleteMapping("/delete/{cart_item_id}")
+    public ResponseEntity updateItem( @PathVariable("cart_item_id") Integer cart_item_id){
+        return cartItemService.deleteCartItem(cart_item_id);
+    }
 }

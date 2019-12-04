@@ -79,4 +79,24 @@ public class CartItemServiceImpl extends AbstractBasicServiceImpl implements Car
         }
         return entity;
     }
+
+    @Override
+    public ResponseEntity deleteCartItem(Integer cart_item_id) {
+        ResponseEntity entity = new ResponseEntity();
+        Session session = null;
+        Transaction tx;
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+            CartItem item = session.find(CartItem.class, cart_item_id);
+            session.delete(item);
+            tx.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            entity.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
+        return entity;
+    }
 }
