@@ -32,4 +32,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Address> listAddress = new ArrayList<>();
 
+    private String username;
+
+    private String pass;
 }

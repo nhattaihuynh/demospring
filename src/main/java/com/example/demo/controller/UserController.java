@@ -17,7 +17,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/save-new")
-    public ResponseEntity addNewUser(@RequestBody User user){
+    public ResponseEntity addNewUser(@RequestBody User user) {
         return userService.addNewUser(user);
     }
 

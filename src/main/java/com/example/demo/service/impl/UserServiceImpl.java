@@ -9,6 +9,8 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
+
 @Service
 public class UserServiceImpl extends AbstractBasicServiceImpl implements UserService {
 
@@ -22,6 +24,16 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
             tx = session.beginTransaction();
             Cart cart = new Cart();
             user.setCart(cart);
+            if (user.getUsername() != null) {
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                md.update(user.getPass().getBytes());
+                byte[] digest = md.digest();
+                StringBuffer sb = new StringBuffer();
+                for (byte b : digest) {
+                    sb.append(Integer.toHexString((int) (b & 0xff)));
+                }
+                user.setPass(sb.toString());
+            }
             session.save(user);
             tx.commit();
         } catch (Exception e) {
