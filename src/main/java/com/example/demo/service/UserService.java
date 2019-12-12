@@ -6,4 +6,6 @@ import com.example.demo.response.ResponseEntity;
 public interface UserService {
 
     ResponseEntity addNewUser(User user);
+
+    User getUserByToken(String token);
 }

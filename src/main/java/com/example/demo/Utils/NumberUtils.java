@@ -1,6 +1,6 @@
 package com.example.demo.Utils;
 
-public class NumberUtils {
+public final class NumberUtils {
     public static double round(double value, int places) {
         if (places < 0) throw new IllegalArgumentException();
 

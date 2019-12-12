@@ -1,5 +1,7 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.Utils.HashUtils;
+import com.example.demo.constant.CommonConstant;
 import com.example.demo.model.Cart;
 import com.example.demo.model.User;
 import com.example.demo.response.HTTPStatus;
@@ -7,9 +9,11 @@ import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.UserService;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
+import java.util.Calendar;
 
 @Service
 public class UserServiceImpl extends AbstractBasicServiceImpl implements UserService {
@@ -28,12 +32,14 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
                 MessageDigest md = MessageDigest.getInstance("MD5");
                 md.update(user.getPass().getBytes());
                 byte[] digest = md.digest();
+                user.setToken(HashUtils.hash(user.getPass() + CommonConstant.hashMD5Token));
                 StringBuffer sb = new StringBuffer();
                 for (byte b : digest) {
                     sb.append(Integer.toHexString((int) (b & 0xff)));
                 }
                 user.setPass(sb.toString());
             }
+            user.setIsActive(true);
             session.save(user);
             tx.commit();
         } catch (Exception e) {
@@ -44,5 +50,24 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
             session.close();
         }
         return entity;
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        User user = null;
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            String sql = "SELECT * FROM user WHERE token=:token";
+            NativeQuery query = session.createNativeQuery(sql, User.class);
+            query.setParameter("token", token);
+            user = (User) query.uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+
+        return user;
     }
 }

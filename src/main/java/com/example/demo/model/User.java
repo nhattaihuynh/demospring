@@ -35,4 +35,8 @@ public class User {
     private String username;
 
     private String pass;
+
+    private Boolean isActive;
+
+    private String token;
 }
