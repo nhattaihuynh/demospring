@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 @Data
 public class ResponseEntity {
-    private String code;
+    private Integer code;
     private String message;
     private Object data = new ArrayList<>();
 

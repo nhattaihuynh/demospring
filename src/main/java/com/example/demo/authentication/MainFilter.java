@@ -1,6 +1,11 @@
 package com.example.demo.authentication;
 
+import com.example.demo.constant.CommonConstant;
+import com.example.demo.model.User;
+import com.example.demo.response.HTTPStatus;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class MainFilter implements Filter {
 
     @Autowired
@@ -16,16 +22,34 @@ public class MainFilter implements Filter {
 
     private List<String> urlNeedFilter = new ArrayList<>();
 
+    @Autowired
+    private UserService userService;
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        urlNeedFilter.add("");
+        urlNeedFilter.add("/address-user/add-new/");
+
         String requestPath = request.getRequestURI();
-        if (false) {
-            filterChain.doFilter(request, response);
+        try {
+            if (this.urlNeedFilter.contains(requestPath)) {
+                String token = request.getParameter(CommonConstant.USER_TOKEN);
+                User user = userService.getUserByToken(token);
+                if (null != user && user.getIsActive()) {
+                    context.setToken(token);
+                    context.setCurrentUser(user);
+                    filterChain.doFilter(request, response);
+                } else {
+                    response.sendError(HTTPStatus.UNAUTHORIZED.getCode(), HTTPStatus.UNAUTHORIZED.getMessage());
+                }
+            } else {
+                filterChain.doFilter(request, response);
+            }
+        } catch (Exception e) {
+            response.sendError(HTTPStatus.SERVER_ERROR.getCode(), HTTPStatus.SERVER_ERROR.getMessage());
         }
         System.out.println(requestPath);
-        filterChain.doFilter(request, response);
+
     }
 }

@@ -1,7 +1,10 @@
 package com.example.demo.authentication;
 
 import com.example.demo.model.User;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class AppScopeContextImpl implements AppScopeContext {
     private String token;
     private User user;
