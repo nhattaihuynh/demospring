@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.authentication.AppScopeContext;
 import com.example.demo.dao.*;
 import com.example.demo.service.AbstractService;
 import org.hibernate.SessionFactory;
@@ -10,6 +11,9 @@ public class AbstractBasicServiceImpl implements AbstractService {
 
     @Autowired
     protected SessionFactory sessionFactory;
+
+    @Autowired
+    protected AppScopeContext context;
 
     @Autowired
     @Lazy

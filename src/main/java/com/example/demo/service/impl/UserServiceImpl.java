@@ -13,7 +13,6 @@ import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
-import java.util.Calendar;
 
 @Service
 public class UserServiceImpl extends AbstractBasicServiceImpl implements UserService {

@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.model.Address;
+import com.example.demo.model.User;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.AddressService;
@@ -16,6 +17,8 @@ public class AddressServiceImpl extends AbstractBasicServiceImpl implements Addr
         ResponseEntity entity = new ResponseEntity();
         Session session = null;
         Transaction tx;
+        User user = context.getCurrentUser();
+        System.out.println(user);
 
         try {
             session = sessionFactory.openSession();

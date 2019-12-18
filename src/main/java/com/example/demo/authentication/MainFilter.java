@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Component
 public class MainFilter implements Filter {
@@ -29,11 +30,12 @@ public class MainFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        urlNeedFilter.add("/address-user/add-new/");
+        urlNeedFilter.add("/address-user/add-new/.*");
+
 
         String requestPath = request.getRequestURI();
         try {
-            if (this.urlNeedFilter.contains(requestPath)) {
+            if (checkURLPatterns(urlNeedFilter, requestPath)) {
                 String token = request.getParameter(CommonConstant.USER_TOKEN);
                 User user = userService.getUserByToken(token);
                 if (null != user && user.getIsActive()) {
@@ -51,5 +53,20 @@ public class MainFilter implements Filter {
         }
         System.out.println(requestPath);
 
+    }
+
+    private static boolean checkURLPatterns(List<String> urlNeedFilter, String requestPath) {
+        for (String url : urlNeedFilter) {
+            if (Pattern.matches(url, requestPath)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        List<String> urlNeedFilter = new ArrayList<>();
+        urlNeedFilter.add("/address-user/add-new/.");
+        System.out.println(checkURLPatterns(urlNeedFilter, "/address-user/add-new/31"));
     }
 }
