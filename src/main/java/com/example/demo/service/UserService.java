@@ -13,4 +13,6 @@ public interface UserService {
     User getUserByToken(String token);
 
     ResponseEntity addBookBuyLater(HashMap<String, List<Integer>> params);
+
+    ResponseEntity deleteBookBuyLater(HashMap<String, Integer> params);
 }

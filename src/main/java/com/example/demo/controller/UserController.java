@@ -28,4 +28,9 @@ public class UserController {
     public ResponseEntity addBookBuyLater(@RequestBody HashMap<String, List<Integer>> params) {
         return userService.addBookBuyLater(params);
     }
+
+    @PostMapping("/del-book-buy-later")
+    public ResponseEntity deleteBookBuyLater(@RequestBody HashMap<String, Integer> params) {
+        return userService.deleteBookBuyLater(params);
+    }
 }

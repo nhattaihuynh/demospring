@@ -32,6 +32,7 @@ public class MainFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         urlNeedFilter.add("/address-user/add-new/.*");
         urlNeedFilter.add("/user/save-book-buy-later");
+        urlNeedFilter.add("/user/del-book-buy-later");
 
         String requestPath = request.getRequestURI();
         try {

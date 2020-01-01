@@ -88,6 +88,26 @@ public class AbstractDaoImpl<T, V extends Serializable> implements AbstractDao<T
             session.close();
         }
     }
+    @Override
+    public void deleteById(V o, Session session) {
+        try {
+            session.delete(findById(o, session));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public T findById(V o, Session session) {
+        T t = null;
+        try {
+            t = (T) session.get(clazz.getName(), o);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        
+        return t;
+    }
 
     @Override
     public void delete(T o) {

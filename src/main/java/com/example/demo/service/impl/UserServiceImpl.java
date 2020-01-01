@@ -110,4 +110,40 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
         }
         return entity;
     }
+
+    @Override
+    public ResponseEntity deleteBookBuyLater(HashMap<String, Integer> params) {
+        ResponseEntity entity = new ResponseEntity();
+        Session session = null;
+        Transaction tx;
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+            User user = context.getCurrentUser();
+            Integer bookId = params.get("ids");
+
+            BookBuyLaterPK pk = new BookBuyLaterPK();
+            pk.setUserId(user.getId());
+            pk.setBookId(bookId);
+//            BookBuyLater b = bookBuyLaterDao.findById(pk);
+//            String sql = "SELECT * FROM book_buy_later WHERE book_id=:book_id AND user_id=:user_id";
+//            NativeQuery query = session.createNativeQuery(sql, BookBuyLater.class);
+//            query.setParameter("book_id", bookId);
+//            query.setParameter("user_id", user.getId());
+//            BookBuyLater a = (BookBuyLater) query.uniqueResult();
+//            System.out.println(a.getId().equals(b.getId()));
+//            System.out.println(a.hashCode());
+//            System.out.println(b.hashCode());
+            bookBuyLaterDao.deleteById(pk, session);
+
+            tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            entity.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        } finally {
+            session.close();
+        }
+        return entity;
+    }
 }
