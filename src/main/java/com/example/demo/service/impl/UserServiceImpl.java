@@ -125,16 +125,10 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
             BookBuyLaterPK pk = new BookBuyLaterPK();
             pk.setUserId(user.getId());
             pk.setBookId(bookId);
-//            BookBuyLater b = bookBuyLaterDao.findById(pk);
-//            String sql = "SELECT * FROM book_buy_later WHERE book_id=:book_id AND user_id=:user_id";
-//            NativeQuery query = session.createNativeQuery(sql, BookBuyLater.class);
-//            query.setParameter("book_id", bookId);
-//            query.setParameter("user_id", user.getId());
-//            BookBuyLater a = (BookBuyLater) query.uniqueResult();
-//            System.out.println(a.getId().equals(b.getId()));
-//            System.out.println(a.hashCode());
-//            System.out.println(b.hashCode());
             bookBuyLaterDao.deleteById(pk, session);
+            //delete cart-item
+            Integer cartItemId = params.get("cartItemId");
+            cartItemDao.deleteById(cartItemId, session);
 
             tx.commit();
         } catch (Exception e) {
