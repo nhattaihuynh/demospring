@@ -16,5 +16,5 @@ public interface UserService {
 
     ResponseEntity deleteBookBuyLater(HashMap<String, Integer> params);
 
-    ResponseEntity getBookBuyLater();
+    ResponseEntity getBookBuyLater(Integer page, Integer numberItem);
 }

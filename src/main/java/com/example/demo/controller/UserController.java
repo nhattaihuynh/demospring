@@ -31,9 +31,9 @@ public class UserController {
         return userService.deleteBookBuyLater(params);
     }
 
-    @GetMapping("/get-book-buy-later")
-    public ResponseEntity getBookBuyLater() {
-        return userService.getBookBuyLater();
+    @GetMapping("/get-book-buy-later/{page}/{numberItem}")
+    public ResponseEntity getBookBuyLater(@PathVariable Integer page, @PathVariable Integer numberItem) {
+        return userService.getBookBuyLater(page, numberItem);
     }
 
 }

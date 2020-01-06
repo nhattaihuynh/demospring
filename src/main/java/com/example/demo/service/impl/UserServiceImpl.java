@@ -143,12 +143,12 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
     }
 
     @Override
-    public ResponseEntity getBookBuyLater() {
+    public ResponseEntity getBookBuyLater(Integer page, Integer numberItem) {
         ResponseEntity entity = new ResponseEntity();
         Session session = null;
         try {
             session = sessionFactory.openSession();
-            List<BookBuyLater> list = new ArrayList<>();
+            List<BookBuyLater> list;
             User user = context.getCurrentUser();
             Integer userId = user.getId();
 
@@ -157,7 +157,6 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
             NativeQuery query = session.createNativeQuery(sql, BookBuyLater.class);
 
             query.setParameter("userId", userId);
-
 
             list = (List<BookBuyLater>) query.list();
 
