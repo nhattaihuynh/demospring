@@ -15,6 +15,7 @@ import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -131,6 +132,37 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
             cartItemDao.deleteById(cartItemId, session);
 
             tx.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            entity.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        } finally {
+            session.close();
+        }
+        return entity;
+    }
+
+    @Override
+    public ResponseEntity getBookBuyLater() {
+        ResponseEntity entity = new ResponseEntity();
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            List<BookBuyLater> list = new ArrayList<>();
+            User user = context.getCurrentUser();
+            Integer userId = user.getId();
+
+            String sql = "SELECT * FROM book_buy_later WHERE user_id=:userId";
+
+            NativeQuery query = session.createNativeQuery(sql, BookBuyLater.class);
+
+            query.setParameter("userId", userId);
+
+
+            list = (List<BookBuyLater>) query.list();
+
+            entity.setData(list);
+
         } catch (Exception e) {
             e.printStackTrace();
             entity.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
