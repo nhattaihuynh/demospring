@@ -10,6 +10,7 @@ public class ResponseEntity {
     private Integer code;
     private String message;
     private Object data = new ArrayList<>();
+    private Integer totalItems = 0;
 
     public ResponseEntity() {
         this.code = HTTPStatus.SUCCESS.getCode();

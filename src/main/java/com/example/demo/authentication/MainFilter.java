@@ -33,7 +33,7 @@ public class MainFilter implements Filter {
         urlNeedFilter.add("/address-user/add-new/.*");
         urlNeedFilter.add("/user/save-book-buy-later");
         urlNeedFilter.add("/user/del-book-buy-later");
-        urlNeedFilter.add("/user/get-book-buy-later");
+        urlNeedFilter.add("/user/get-book-buy-later/.*");
 
         String requestPath = request.getRequestURI();
         try {

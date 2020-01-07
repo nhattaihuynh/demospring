@@ -26,7 +26,8 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
     public ResponseEntity save(Book book) {
         ResponseEntity response = new ResponseEntity();
         try {
-            response.setData(bookDao.save(book));
+            Book bookReturn = bookDao.save(book);
+            response.setData("book_id: " + bookReturn.getId());
         } catch (Exception e) {
             e.printStackTrace();
             response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());

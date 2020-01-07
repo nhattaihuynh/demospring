@@ -14,6 +14,7 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Date;
@@ -151,15 +152,25 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
             List<BookBuyLater> list;
             User user = context.getCurrentUser();
             Integer userId = user.getId();
+            String sqlCount = "SELECT COUNT(*) FROM book_buy_later WHERE user_id=:userId";
 
-            String sql = "SELECT * FROM book_buy_later WHERE user_id=:userId";
+            NativeQuery queryCount = session.createNativeQuery(sqlCount);
+
+            queryCount.setParameter("userId", userId);
+
+            Integer totalItems = ((BigInteger) queryCount.uniqueResult()).intValue();
+
+            String sql = "SELECT * FROM book_buy_later WHERE user_id=:userId LIMIT :start, :num";
 
             NativeQuery query = session.createNativeQuery(sql, BookBuyLater.class);
 
             query.setParameter("userId", userId);
+            query.setParameter("start", page - 1);
+            query.setParameter("num", page * numberItem);
 
             list = (List<BookBuyLater>) query.list();
 
+            entity.setTotalItems(totalItems);
             entity.setData(list);
 
         } catch (Exception e) {
