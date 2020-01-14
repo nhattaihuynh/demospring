@@ -14,7 +14,7 @@ public class AddressController {
     private AddressService addressService;
 
     @PostMapping("/add-new/{id_user}")
-    public ResponseEntity save(@RequestBody Address address, @PathVariable("id_user") Integer id_user){
+    public ResponseEntity save(@RequestBody Address address, @PathVariable("id_user") Integer id_user) {
         return addressService.addNewAddress(address, id_user);
     }
 }

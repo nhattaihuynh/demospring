@@ -6,6 +6,7 @@ import com.example.demo.service.AbstractService;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 public class AbstractBasicServiceImpl implements AbstractService {
 
@@ -18,6 +19,11 @@ public class AbstractBasicServiceImpl implements AbstractService {
     @Autowired
     @Lazy
     protected BookDao bookDao;
+
+    @Autowired
+    @Lazy
+    protected MongoTemplate mongoTemplate;
+
     @Autowired
     @Lazy
     protected PublishHouseDao publishHouseDao;
