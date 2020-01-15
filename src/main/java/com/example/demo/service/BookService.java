@@ -8,4 +8,6 @@ public interface BookService {
     ResponseEntity findAll();
 
     ResponseEntity save(Book book);
+
+    ResponseEntity getBookHistory(String name);
 }

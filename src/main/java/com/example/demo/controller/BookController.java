@@ -22,4 +22,9 @@ public class BookController {
     public ResponseEntity save(@RequestBody Book book){
         return bookService.save(book);
     }
+
+    @GetMapping("/history/{sku}")
+    public ResponseEntity getBookHistory(@PathVariable String sku){
+        return bookService.getBookHistory(sku);
+    }
 }
