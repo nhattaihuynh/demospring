@@ -6,6 +6,8 @@ import com.example.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+
 @RestController
 @RequestMapping(value = "/book", produces = "application/json; charset=utf-8")
 public class BookController {
@@ -26,5 +28,10 @@ public class BookController {
     @GetMapping("/history/{sku}")
     public ResponseEntity getBookHistory(@PathVariable String sku){
         return bookService.getBookHistory(sku);
+    }
+
+    @PostMapping("/get-history")
+    public ResponseEntity getBookHistoryByOrder(@RequestBody HashMap<String, Object> params){
+        return bookService.getBookHistoryByOrder(params);
     }
 }

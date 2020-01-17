@@ -5,10 +5,12 @@ import com.example.demo.model.Book;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.BookService;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 
 @Service
 public class BookServiceImpl extends AbstractBasicServiceImpl implements BookService {
@@ -58,9 +60,36 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
     public ResponseEntity getBookHistory(String sku) {
         ResponseEntity response = new ResponseEntity();
         try {
-            
             Collection<BookHistory> history = mongoBookHisDao.getAllBySku(sku);
             response.setData(history);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseEntity getBookHistoryByOrder(HashMap<String, Object> params) {
+        ResponseEntity response = new ResponseEntity();
+        try {
+            String order = (String) params.get("order");
+            if (null == order) {
+                response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+                response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+                return response;
+            }
+            Sort sort;
+            if (order.equals("ascending")) {
+                sort = Sort.by("createdDate").ascending();
+            } else {
+                sort = Sort.by("createdDate").descending();
+            }
+
+            Collection<BookHistory> history = mongoBookHisDao.findAll(sort);
+            response.setData(history);
+
         } catch (Exception e) {
             e.printStackTrace();
             response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
