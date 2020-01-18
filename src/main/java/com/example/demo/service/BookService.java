@@ -14,4 +14,6 @@ public interface BookService {
     ResponseEntity getBookHistory(String name);
 
     ResponseEntity getBookHistoryByOrder(HashMap<String, Object> params);
+
+    ResponseEntity getBookHistoryByQuantityGT(Integer i);
 }

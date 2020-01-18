@@ -34,4 +34,9 @@ public class BookController {
     public ResponseEntity getBookHistoryByOrder(@RequestBody HashMap<String, Object> params){
         return bookService.getBookHistoryByOrder(params);
     }
+
+    @GetMapping("/get-history-by-order/{quantity}")
+    public ResponseEntity getBookHistoryByQuantityGT(@PathVariable Integer quantity){
+        return bookService.getBookHistoryByQuantityGT(quantity);
+    }
 }

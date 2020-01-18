@@ -1,10 +1,12 @@
 package com.example.demo.service.impl;
 
 import com.example.common.entity.mongodb.BookHistory;
+import com.example.common.entity.mongodb.QBookHistory;
 import com.example.demo.model.Book;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.BookService;
+import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -97,4 +99,25 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
         }
         return response;
     }
+
+    @Override
+    public ResponseEntity getBookHistoryByQuantityGT(Integer quantity) {
+        ResponseEntity response = new ResponseEntity();
+        try {
+
+            QBookHistory query = new QBookHistory("query");
+            Predicate quantityFilter = query.quantity.gt(quantity);
+            Collection<BookHistory> history = (Collection<BookHistory>) mongoBookHisDao.findAll(quantityFilter);
+            response.setData(history);
+            response.setTotalItems((int) mongoBookHisDao.count(quantityFilter));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
+        return response;
+    }
+
+
 }
