@@ -16,4 +16,6 @@ public interface BookService {
     ResponseEntity getBookHistoryByOrder(HashMap<String, Object> params);
 
     ResponseEntity getBookHistoryByQuantityGT(Integer i);
+
+    ResponseEntity getBookHistoryByNameFullTextSearch(HashMap<String, String> params);
 }

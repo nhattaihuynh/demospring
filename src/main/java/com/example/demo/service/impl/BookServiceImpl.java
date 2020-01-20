@@ -2,17 +2,21 @@ package com.example.demo.service.impl;
 
 import com.example.common.entity.mongodb.BookHistory;
 import com.example.common.entity.mongodb.QBookHistory;
+import com.example.demo.Utils.CommonUtils;
 import com.example.demo.model.Book;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.BookService;
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class BookServiceImpl extends AbstractBasicServiceImpl implements BookService {
@@ -43,6 +47,7 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
             history.setAction("CREATE");
             history.setEntity(Book.class.toString());
             history.setBookName(bookReturn.getName());
+            history.setBookNameWithoutSign(CommonUtils.removeAccent(bookReturn.getName().toLowerCase()));
 //            mongoTemplate.insert(history);
 
             response.setData("book_id: " + bookReturn.getId());
@@ -110,6 +115,26 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
             Collection<BookHistory> history = (Collection<BookHistory>) mongoBookHisDao.findAll(quantityFilter);
             response.setData(history);
             response.setTotalItems((int) mongoBookHisDao.count(quantityFilter));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseEntity getBookHistoryByNameFullTextSearch(HashMap<String, String> params) {
+        ResponseEntity response = new ResponseEntity();
+        try {
+            String keyword = params.get("keyword").toString();
+//            TextQuery textQuery = TextQuery.queryText(new TextCriteria().matchingAny(keyword)).sortByScore();
+//            List<BookHistory> result = mongoTemplate.find(textQuery, BookHistory.class, "book_his");
+            keyword = CommonUtils.removeAccent(keyword.toLowerCase());
+            TextCriteria search = TextCriteria.forDefaultLanguage().matching(keyword);
+            List<BookHistory> result = mongoBookHisDao.findAllBy(search);
+            response.setData(result);
 
         } catch (Exception e) {
             e.printStackTrace();

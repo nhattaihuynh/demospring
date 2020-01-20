@@ -39,4 +39,9 @@ public class BookController {
     public ResponseEntity getBookHistoryByQuantityGT(@PathVariable Integer quantity){
         return bookService.getBookHistoryByQuantityGT(quantity);
     }
+
+    @PostMapping("/get-history-by-name")
+    public ResponseEntity getBookHistoryByNameFullTextSearch(@RequestBody HashMap<String, String> params){
+        return bookService.getBookHistoryByNameFullTextSearch(params);
+    }
 }
