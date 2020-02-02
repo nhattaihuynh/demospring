@@ -4,6 +4,7 @@ public enum HTTPStatus {
     SUCCESS(200, "Request success"),
     BAD_REQUEST(400, "Bad request"),
     UNAUTHORIZED(401, "Unauthorized"),
+    PARAMETER_INVALID(402, "Parameter is invalid"),
     FORBIDDEN(403, "Access is forbidden"),
     NOT_FOUND(404, "Not found resource"),
     CONFLICT(409, "Data exist in system"),

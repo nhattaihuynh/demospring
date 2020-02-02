@@ -3,16 +3,25 @@ package com.example.demo.service.impl;
 import com.example.common.entity.mongodb.BookHistory;
 import com.example.common.entity.mongodb.QBookHistory;
 import com.example.demo.Utils.CommonUtils;
+import com.example.demo.constant.CommonConstant;
 import com.example.demo.model.Book;
+import com.example.demo.model.CartItem;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.BookService;
 import com.querydsl.core.types.Predicate;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -140,6 +149,44 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
             e.printStackTrace();
             response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
             response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
+        return response;
+    }
+
+    @Override
+    public ResponseEntity uploadImageForBook(MultipartFile fileUpload, Integer bookId) {
+        ResponseEntity response = new ResponseEntity();
+        Session session = null;
+        Transaction tx;
+        try {
+            if (fileUpload.isEmpty()) {
+                response.setMessage(HTTPStatus.PARAMETER_INVALID.getMessage());
+                response.setCode(HTTPStatus.PARAMETER_INVALID.getCode());
+            } else {
+                String path = CommonConstant.FILE_UPLOAD_LOCATION + fileUpload.getOriginalFilename();
+                byte[] bytes = fileUpload.getBytes();
+                Path p = Paths.get(path);
+                Files.write(p, bytes);
+                session = sessionFactory.openSession();
+                tx = session.beginTransaction();
+                NativeQuery query = session.createNativeQuery("UPDATE book SET imageLink=:imageLink WHERE id=:id", Book.class);
+                query.setParameter("id", bookId);
+                query.setParameter("imageLink", path);
+                query.executeUpdate();
+                tx.commit();
+
+                response.setData(path);
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        } finally {
+            if (null != session) {
+                session.close();
+            }
         }
         return response;
     }

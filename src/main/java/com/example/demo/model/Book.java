@@ -51,6 +51,8 @@ public class Book {
     @OneToOne(mappedBy = "book")
     private CartItem cartItem;
 
+    private String imageLink;
+
     public Book() {
     }
 
