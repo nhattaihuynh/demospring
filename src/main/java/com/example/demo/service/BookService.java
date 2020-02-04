@@ -10,7 +10,7 @@ public interface BookService {
 
     ResponseEntity findAll();
 
-    ResponseEntity save(Book book);
+    ResponseEntity save(Book book, MultipartFile img);
 
     ResponseEntity getBookHistory(String name);
 

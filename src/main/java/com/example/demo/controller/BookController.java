@@ -22,8 +22,8 @@ public class BookController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity save(@RequestBody Book book) {
-        return bookService.save(book);
+    public ResponseEntity save(@RequestPart("book") Book book, @RequestPart("file") MultipartFile img) {
+        return bookService.save(book, img);
     }
 
     @GetMapping("/history/{sku}")

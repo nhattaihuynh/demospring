@@ -5,7 +5,6 @@ import com.example.common.entity.mongodb.QBookHistory;
 import com.example.demo.Utils.CommonUtils;
 import com.example.demo.constant.CommonConstant;
 import com.example.demo.model.Book;
-import com.example.demo.model.CartItem;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.BookService;
@@ -15,9 +14,9 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.query.TextCriteria;
-import org.springframework.data.mongodb.core.query.TextQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -44,10 +43,25 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
     }
 
     @Override
-    public ResponseEntity save(Book book) {
+    public ResponseEntity save(Book book, MultipartFile img) {
         ResponseEntity response = new ResponseEntity();
+        Session session = null;
+        Transaction tx;
         try {
             Book bookReturn = bookDao.save(book);
+            String path = CommonConstant.FILE_UPLOAD_LOCATION + img.getOriginalFilename();
+//            String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath().toUriString();
+//            System.out.println(fileDownloadUri);
+            byte[] bytes = img.getBytes();
+            Path p = Paths.get(path);
+            Files.write(p, bytes);
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+            NativeQuery query = session.createNativeQuery("UPDATE book SET imageLink=:imageLink WHERE id=:id", Book.class);
+            query.setParameter("id", bookReturn.getId());
+            query.setParameter("imageLink", path);
+            query.executeUpdate();
+            tx.commit();
 
             BookHistory history = new BookHistory();
             history.setQuantity(bookReturn.getQuantity());
@@ -68,6 +82,10 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
             e.printStackTrace();
             response.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
             response.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }  finally {
+            if (null != session) {
+                session.close();
+            }
         }
         return response;
     }
