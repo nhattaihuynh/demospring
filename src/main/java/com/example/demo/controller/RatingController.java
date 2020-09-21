@@ -17,4 +17,8 @@ public class RatingController {
         return ratingService.addNewRating(dto, id_book);
     }
 
+    @GetMapping("/calc-rating-book/{id_book}")
+    public ResponseEntity calcRatingForBook(@PathVariable("id_book") Integer id_book){
+        return ratingService.calcRatingForBook(id_book);
+    }
 }

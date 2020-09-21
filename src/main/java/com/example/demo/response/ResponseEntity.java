@@ -16,6 +16,7 @@ public class ResponseEntity {
         this.code = HTTPStatus.SUCCESS.getCode();
         this.message = HTTPStatus.SUCCESS.getMessage();
     }
+    
     @Override
     public String toString(){
         System.out.println(GSonUtils.getGSonInstance().toJson(this));

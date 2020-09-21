@@ -61,4 +61,9 @@ public class RatingServiceImpl extends AbstractBasicServiceImpl implements Ratin
         }
         return responseEntity;
     }
+
+    @Override
+    public ResponseEntity calcRatingForBook(Integer id_book) {
+        return null;
+    }
 }

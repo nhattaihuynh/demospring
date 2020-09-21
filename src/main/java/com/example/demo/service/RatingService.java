@@ -6,4 +6,6 @@ import com.example.demo.response.ResponseEntity;
 public interface RatingService {
     
     ResponseEntity addNewRating(RatingDTO dto, Integer id_book);
+
+    ResponseEntity calcRatingForBook(Integer id_book);
 }
