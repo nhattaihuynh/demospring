@@ -50,4 +50,9 @@ public class BookController {
     public ResponseEntity uploadImageForBook(@RequestParam("file") MultipartFile fileUpload, @PathVariable ("bookId") Integer bookId) {
         return bookService.uploadImageForBook(fileUpload, bookId);
     }
+    
+    @PostMapping("/add-question-for-book")
+    public ResponseEntity addQuestionForBook(@RequestBody HashMap<String, Object> params) {
+        return bookService.addQuestionForBook(params);
+    }
 }

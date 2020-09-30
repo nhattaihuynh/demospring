@@ -5,6 +5,8 @@ import com.example.common.entity.mongodb.QBookHistory;
 import com.example.demo.Utils.CommonUtils;
 import com.example.demo.constant.CommonConstant;
 import com.example.demo.model.Book;
+import com.example.demo.model.CartItem;
+import com.example.demo.model.QuestionAns;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.BookService;
@@ -171,7 +173,8 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
         return response;
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public ResponseEntity uploadImageForBook(MultipartFile fileUpload, Integer bookId) {
         ResponseEntity response = new ResponseEntity();
         Session session = null;
@@ -208,6 +211,42 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
         }
         return response;
     }
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public ResponseEntity addQuestionForBook(HashMap<String, Object> params) {
+        ResponseEntity entity = new ResponseEntity();
+        Session session = null;
+        Transaction tx;
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+            Integer idBook = (Integer) params.get("idBook");
+            String question = (String) params.get("question");
+     
+            if (idBook == null || question == null) {
+                entity.setCode(HTTPStatus.PARAMETER_INVALID.getCode());
+                entity.setMessage(HTTPStatus.PARAMETER_INVALID.getMessage());
+                return entity;
+            }
+            Date current = new Date();
+            QuestionAns qus = new QuestionAns();
+            qus.setQuestion(question);
+            qus.setCreatedDate(current);
+            qus.setUpdatedDate(current);
+            qus.setBook(bookDao.findById(idBook, session));
+            
+            session.save(qus);
+            tx.commit();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            entity.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
+        return entity;
+    
+	}
 
 
 }

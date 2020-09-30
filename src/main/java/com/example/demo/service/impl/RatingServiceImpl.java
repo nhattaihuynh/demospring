@@ -18,6 +18,7 @@ import java.util.Date;
 @Service
 public class RatingServiceImpl extends AbstractBasicServiceImpl implements RatingService {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseEntity addNewRating(RatingDTO dto, Integer id_book) {
 		ResponseEntity responseEntity = new ResponseEntity();

@@ -21,4 +21,6 @@ public interface BookService {
     ResponseEntity getBookHistoryByNameFullTextSearch(HashMap<String, String> params);
 
     ResponseEntity uploadImageForBook(MultipartFile fileUpload, Integer bookId);
+
+	ResponseEntity addQuestionForBook(HashMap<String, Object> params);
 }
