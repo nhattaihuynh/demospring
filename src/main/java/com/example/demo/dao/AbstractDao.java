@@ -19,5 +19,6 @@ public interface AbstractDao<T, V> {
     void deleteById(V o, Session session);
 
     void delete(T o) ;
-
+    
+    void update(T t, Session session);
 }

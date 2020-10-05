@@ -121,4 +121,13 @@ public class AbstractDaoImpl<T, V extends Serializable> implements AbstractDao<T
             session.close();
         }
     }
+
+	@Override
+	public void update(T t, Session session) {
+        try {
+            session.update(t);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+	}
 }
