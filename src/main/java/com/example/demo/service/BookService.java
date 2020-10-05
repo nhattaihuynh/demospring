@@ -23,4 +23,6 @@ public interface BookService {
     ResponseEntity uploadImageForBook(MultipartFile fileUpload, Integer bookId);
 
 	ResponseEntity addQuestionForBook(HashMap<String, Object> params);
+
+	ResponseEntity addAnswerForBook(HashMap<String, Object> params);
 }

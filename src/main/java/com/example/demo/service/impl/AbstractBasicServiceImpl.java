@@ -52,4 +52,9 @@ public class AbstractBasicServiceImpl implements AbstractService {
     @Autowired
     @Lazy
     protected MongoBookHisDao mongoBookHisDao;
+    
+    @Autowired
+    @Lazy
+    protected QuestionAnsDao questionAnsDao;
+    
 }

@@ -1,25 +1,5 @@
 package com.example.demo.service.impl;
 
-import com.example.common.entity.mongodb.BookHistory;
-import com.example.common.entity.mongodb.QBookHistory;
-import com.example.demo.Utils.CommonUtils;
-import com.example.demo.constant.CommonConstant;
-import com.example.demo.model.Book;
-import com.example.demo.model.CartItem;
-import com.example.demo.model.QuestionAns;
-import com.example.demo.response.HTTPStatus;
-import com.example.demo.response.ResponseEntity;
-import com.example.demo.service.BookService;
-import com.querydsl.core.types.Predicate;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.query.NativeQuery;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.query.TextCriteria;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +7,25 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.query.TextCriteria;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.example.common.entity.mongodb.BookHistory;
+import com.example.common.entity.mongodb.QBookHistory;
+import com.example.demo.Utils.CommonUtils;
+import com.example.demo.constant.CommonConstant;
+import com.example.demo.model.Book;
+import com.example.demo.model.QuestionAns;
+import com.example.demo.response.HTTPStatus;
+import com.example.demo.response.ResponseEntity;
+import com.example.demo.service.BookService;
+import com.querydsl.core.types.Predicate;
 
 @Service
 public class BookServiceImpl extends AbstractBasicServiceImpl implements BookService {
@@ -44,7 +43,8 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
         return response;
     }
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public ResponseEntity save(Book book, MultipartFile img) {
         ResponseEntity response = new ResponseEntity();
         Session session = null;
@@ -212,7 +212,6 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
         return response;
     }
 
-	@SuppressWarnings("rawtypes")
 	@Override
 	public ResponseEntity addQuestionForBook(HashMap<String, Object> params) {
         ResponseEntity entity = new ResponseEntity();
@@ -248,5 +247,35 @@ public class BookServiceImpl extends AbstractBasicServiceImpl implements BookSer
     
 	}
 
+	@Override
+	public ResponseEntity addAnswerForBook(HashMap<String, Object> params) {
+        ResponseEntity entity = new ResponseEntity();
+        Session session = null;
+        Transaction tx;
+        try {
+            session = sessionFactory.openSession();
+            tx = session.beginTransaction();
+            Integer idQuestion = (Integer) params.get("idQuestion");
+            String answer = (String) params.get("answer");
+     
+            if (idQuestion == null || answer == null) {
+                entity.setCode(HTTPStatus.PARAMETER_INVALID.getCode());
+                entity.setMessage(HTTPStatus.PARAMETER_INVALID.getMessage());
+                return entity;
+            }
+            Date current = new Date();
+            QuestionAns qus = questionAnsDao.findById(idQuestion, session);
+            qus.setAnswer(answer);
+            qus.setAnsweredDate(current);
+            questionAnsDao.update(qus, session);
+            tx.commit();
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity.setMessage(HTTPStatus.SERVER_ERROR.getMessage());
+            entity.setCode(HTTPStatus.SERVER_ERROR.getCode());
+        }
+        return entity;
+    
+	}
 }

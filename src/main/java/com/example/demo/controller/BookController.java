@@ -55,4 +55,9 @@ public class BookController {
     public ResponseEntity addQuestionForBook(@RequestBody HashMap<String, Object> params) {
         return bookService.addQuestionForBook(params);
     }
+    
+    @PostMapping("/add-answer-for-book")
+    public ResponseEntity addAnswerForBook(@RequestBody HashMap<String, Object> params) {
+        return bookService.addAnswerForBook(params);
+    }
 }
