@@ -36,5 +36,5 @@ public class AddressServiceImpl extends AbstractBasicServiceImpl implements Addr
         }
 
         return entity;
-}
+    }
 }
