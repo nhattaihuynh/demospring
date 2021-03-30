@@ -14,7 +14,6 @@ import com.example.demo.response.ResponseEntity;
 @Service
 public class BookElasticService {
 
-	@Autowired
 	private BookElasticDao bookDao;
 
 	public ResponseEntity getAllBooks() {
