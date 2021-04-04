@@ -35,6 +35,7 @@ public class ElasticSearchConfig {
 	public Client client() {
 		TransportClient client = null;
 		try {
+			 System.out.println("host: " + host +" port: "+ port);
 			Settings settingsBuilder = Settings.builder()
 		            .put("client.transport.sniff", false).build();
 			client = new PreBuiltTransportClient(settingsBuilder)
