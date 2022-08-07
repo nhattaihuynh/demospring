@@ -23,7 +23,7 @@ public class AddressServiceImpl extends AbstractBasicServiceImpl implements Addr
         try {
             session = sessionFactory.openSession();
             tx = session.beginTransaction();
-            address.setUser(userDao.findById(id_user));
+            address.setUser(userDao.findById(id_user).get());
             session.save(address);
 
             tx.commit();

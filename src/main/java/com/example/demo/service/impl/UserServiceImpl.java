@@ -4,11 +4,15 @@ import com.example.demo.Utils.HashUtils;
 import com.example.demo.constant.CommonConstant;
 import com.example.demo.model.BookBuyLater;
 import com.example.demo.model.Cart;
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.model.pk.BookBuyLaterPK;
 import com.example.demo.response.HTTPStatus;
 import com.example.demo.response.ResponseEntity;
 import com.example.demo.service.UserService;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
@@ -16,16 +20,20 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 @Service
+@Slf4j
+@Transactional
 public class UserServiceImpl extends AbstractBasicServiceImpl implements UserService {
 
     @Override
     public ResponseEntity addNewUser(User user) {
+    	log.debug("");
         ResponseEntity entity = new ResponseEntity();
         Session session = null;
         Transaction tx;
@@ -182,4 +190,36 @@ public class UserServiceImpl extends AbstractBasicServiceImpl implements UserSer
         }
         return entity;
     }
+
+	@Override
+	public User saveUser(User user) {
+		log.info("Saving user {} to database", user);
+		return userRepo.save(user);
+	}
+
+	@Override
+	public Role saveRole(Role role) {
+		log.info("Saving role {} to database", role);
+		return roleRepo.save(role);
+	}
+
+	@Override
+	public void addRoleToUser(String username, String roleName) {
+		log.info("Adding role {} to user {}", roleName, username);
+		User user = userRepo.findByUsername(username);
+		Role role = roleRepo.findByName(roleName);
+		user.getRoles().add(role);
+	}
+
+	@Override
+	public User getUser(String username) {
+		log.info("Fetching user {} from database", username);
+		return userRepo.findByUsername(username);
+	}
+
+	@Override
+	public List<User> getUsers() {
+		log.info("Fetching all user from database");
+		return userRepo.findAll();
+	}
 }

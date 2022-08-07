@@ -3,6 +3,8 @@ package com.example.demo.service.impl;
 import com.example.demo.authentication.AppScopeContext;
 import com.example.demo.dao.*;
 import com.example.demo.dao.mongo.MongoBookHisDao;
+import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AbstractService;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +41,7 @@ public class AbstractBasicServiceImpl implements AbstractService {
 
     @Autowired
     @Lazy
-    protected UserDao userDao;
+    protected UserRepository userDao;
 
     @Autowired
     @Lazy
@@ -57,4 +59,11 @@ public class AbstractBasicServiceImpl implements AbstractService {
     @Lazy
     protected QuestionAnsDao questionAnsDao;
     
+    @Autowired
+    @Lazy
+    protected RoleRepository roleRepo;
+    
+    @Autowired
+    @Lazy
+    protected UserRepository userRepo;
 }

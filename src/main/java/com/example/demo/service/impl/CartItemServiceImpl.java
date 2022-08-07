@@ -35,7 +35,7 @@ public class CartItemServiceImpl extends AbstractBasicServiceImpl implements Car
 
             cartItem.setQuantity(cartDto.getQuantity());
             cartItem.setBook(bookDao.findById(cartDto.getIdBook()));
-            cartItem.setCart(userDao.findById(id_user).getCart());
+            cartItem.setCart(userDao.findById(id_user).get().getCart());
 
             session.save(cartItem);
             tx.commit();

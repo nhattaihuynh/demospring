@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import com.example.demo.response.ResponseEntity;
 
@@ -17,4 +18,14 @@ public interface UserService {
     ResponseEntity deleteBookBuyLater(HashMap<String, Integer> params);
 
     ResponseEntity getBookBuyLater(Integer page, Integer numberItem);
+    
+    User saveUser(User user);
+    
+    Role saveRole(Role role);
+    
+    void addRoleToUser(String username, String roleName);
+    
+    User getUser(String username);
+    
+    List<User> getUsers();
 }
